@@ -4,7 +4,7 @@
 
 // Fast sem skilgreinir heiti á lykli sem vistað er undir í localStorage
 const LOCALSTORAGE_KEY = 'calc_game_scores';
-
+let geymsla = [];
 /**
  * Sækir gögn úr localStorage. Skilað sem röðuðum lista á forminu:
  * { points: <stig>, name: <nafn> }
@@ -13,6 +13,10 @@ const LOCALSTORAGE_KEY = 'calc_game_scores';
  */
 export function load() {
   // todo útfæra
+  if (localStorage.getItem(LOCALSTORAGE_KEY)) {
+    geymsla = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY));
+  }
+  return geymsla;
 }
 
 /**
@@ -23,6 +27,10 @@ export function load() {
  */
 export function save(name, points) {
   // todo útfæra
+  const stigNafn = { points, name };
+  geymsla = geymsla.concat(stigNafn);
+  geymsla.sort((a, b) => Number(b.points) - Number(a.points));
+  localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(geymsla));
 }
 
 /**
@@ -30,4 +38,7 @@ export function save(name, points) {
  */
 export function clear() {
   // todo útfæra
+  geymsla = [];
+  localStorage.clear();
+  window.localStorage.removeItem(LOCALSTORAGE_KEY);
 }
